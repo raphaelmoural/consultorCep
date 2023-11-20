@@ -46,22 +46,26 @@ async function buscarCepPorEndereco() {
 
     try {
         const response = await axios.get(`https://viacep.com.br/ws/${estado}/${cidade}/${rua}/json/`);
-        
+        const result = response.data
         if (!response.data.erro) {
-            const endereco = {
-                rua: response.data.logradouro || 'Não informado',
-                cidade: response.data.localidade || 'Não informado',
-                estado: response.data.uf || 'Não informado',
-                cep: response.data.cep || 'Não informado'
-            };
+            const endereco = result.map( result => {
+                return `
+                <div>
+                    <p>CEP: <span>${result.cep}</span></p>
+                    <p>Rua: <span>${result.logradouro === "" ? 'Sem dados' :  result.logradouro}</span></p>
+                    <p>Bairro: <span>${result.bairro === "" ? 'Sem dados' :  result.bairro}</span></p>
+                    <p>Cidade: <span>${result.cidade === "" ? 'Sem dados' :  result.cidade}</span></p>
+                    <p>Estado: <span>${result.estado === "" ? 'Sem dados' :  result.estado}</span></p>
+                </div>`
+            }).join('');
+            // {
+            //     rua: response.data.logradouro || 'Não informado',
+            //     cidade: response.data.localidade || 'Não informado',
+            //     estado: response.data.uf || 'Não informado',
+            //     cep: response.data.cep || 'Não informado'
+            // };
 
-            resultadoElement.innerHTML = `
-                <p><strong>Endereço encontrado:</strong></p>
-                <p>Rua: ${endereco.rua}</p>
-                <p>Cidade: ${endereco.cidade}</p>
-                <p>Estado: ${endereco.estado}</p>
-                <p>CEP: ${endereco.cep}</p>
-            `;
+            resultadoElement.innerHTML = endereco;
 
             ruaInput.value = '';
             cidadeInput.value = '';
