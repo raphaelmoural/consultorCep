@@ -5,23 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Consultor de Cep</title>
+    <title>Consulta de Endereço</title>
 </head>
 <body>
     <div class="container">
-        <h2>Buscador de Endereço:</h2>
-        <input type="text" id="cep" placeholder="Digite o cep"/>
-        <input type="text" id="state" placeholder="Insira um estado">
-        <input type="text" id="city" placeholder="Insira uma cidade">
-        <input type="text" id="street" placeholder="Insira uma rua">
-        <button id="searchButton">Buscar</button>
-        <p id="streetName"></p>
-        <div class="locality">
-            <p id="neighName"></p>
-            <p id="locality"></p>
-        </div>
-    </div>
+        <h1>Consulta de Endereço</h1>
+        <label for="consultaSelect">Escolha o tipo de consulta:</label>
+        <select id="consultaSelect" onchange="toggleConsultaSection()">
+            <option value="cep">Por CEP</option>
+            <option value="endereco">Por Endereço</option>
+        </select>
 
+        <div id="cepSection">
+            <label for="cepInput">Digite o CEP:</label>
+            <input type="text" id="cepInput" placeholder="Ex: 00000-000">
+            <button id="consultarCepButton" class="consultarButton" onclick="consultarEnderecoPorCep()">Consultar por CEP</button>
+        </div>
+
+        <div id="enderecoSection" style="display: none;">
+            <label for="ruaInput">Rua:</label>
+            <input type="text" id="ruaInput" placeholder="Ex: Rua...">
+            <label for="cidadeInput">Cidade:</label>
+            <input type="text" id="cidadeInput"placeholder="Ex: Belo Horizonte">
+            <label for="estadoInput">Estado:</label>
+            <input type="text" id="estadoInput" maxlength="2" placeholder="Ex: MG">
+            <button id="consultarEnderecoButton" class="consultarButton" onclick="buscarCepPorEndereco()">Consultar por Endereço</button>
+        </div>
+
+        <div id="resultado"></div>
+    </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
